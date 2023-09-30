@@ -9,48 +9,32 @@ export class TokenLimiter extends Transform {
     constructor(model: string, options = {}) {
         super(options)
         this.tokenEncoder = tiktoken.encodingForModel(model)
+        this.data = ''
     }
 
-    public _transform(chunk, encoding, callback) {
+    public _transform(chunk: Buffer, encoding: string, callback: Function): void {
         this.data += chunk
         const tokenCount = this.getNumberOfTokens(this.data)
-        if (tokenCount > 2500) {
-            this.pushDataInChunks(this.data)
+        if (tokenCount > 2000) {
+            this.pushData(this.data)
             this.data = ''
         }
         callback()
     }
 
-    public _flush(callback) {
-        this.pushDataInChunks(this.data)
+    public _flush(callback: Function) {
+        this.pushData(this.data)
         this.data = ''
         callback()
     }
 
     private pushDataInChunks(data: string): void {
-        const words = this.words(data)
-        const middleIdx = Math.ceil(words.length / 2)
-        const leftPart = words.slice(0, middleIdx).join(' ')
-        const rightPart = words.slice(middleIdx).join(' ')
+        const middleIdx = Math.ceil(data.length / 2)
+        const endOfSentenceIdx = data.indexOf('.', middleIdx)
+        const leftPart = data.substring(0, endOfSentenceIdx + 1)
+        const rightPart = data.substring(endOfSentenceIdx + 2)
         this.pushData(leftPart)
         this.pushData(rightPart)
-    }
-
-    private words(data: string, maxWordLength = 100): string[] {
-        const words = []
-        let word = ''
-        for (const char of data) {
-            if (char === ' ') {
-                words.push(word)
-                word = ''
-            } else if (word.length > maxWordLength) {
-                words.push(word)
-                word = ''
-            } else {
-                word += char
-            }
-        }
-        return words
     }
 
     private pushData(data: string) {
