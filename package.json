@@ -1,0 +1,15 @@
+{
+  "name": "orthography-checker",
+  "packageManager": "yarn@4.0.0-rc.51",
+  "bin": "bin/main.js",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "openai": "^4.11.0"
+  },
+  "volta": {
+    "node": "18.18.0",
+    "yarn": "4.0.0-rc.52"
+  }
+}
