@@ -1,7 +1,7 @@
 import { Transform } from 'stream'
 
 export class OpenAiSender extends Transform {
-    constructor(options = {}) {
+    constructor(model: string, openAiKey: string, options = {}) {
         super(options);
     }
 

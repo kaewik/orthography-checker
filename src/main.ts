@@ -14,7 +14,7 @@ async function main(): Promise<void> {
         encoding: 'utf-8'
     })
     const tokenLimiter = new TokenLimiter(GPT_MODEL)
-    const openAiSender = new OpenAiSender()
+    const openAiSender = new OpenAiSender(GPT_MODEL, args.openAiKey)
     await pipeline(
         fileStream,
         tokenLimiter,
