@@ -1,12 +1,19 @@
 {
   "name": "orthography-checker",
   "packageManager": "yarn@4.0.0-rc.51",
+  "type": "module",
   "bin": "bin/main.js",
+  "scripts": {
+    "start": "node ./bin/main.js"
+  },
   "devDependencies": {
+    "@types/node": "^20.8.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "openai": "^4.11.0"
+    "meow": "^12.1.1",
+    "openai": "^4.11.0",
+    "tiktoken-node": "^0.0.6"
   },
   "volta": {
     "node": "18.18.0",

@@ -1,8 +1,10 @@
 {
     "compilerOptions": {
         "declaration": true,
-        "sourceMap": true,
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
         "outDir": "bin",
+        "sourceMap": true,
     },
     "include": ["src/**/*.ts"],
 }

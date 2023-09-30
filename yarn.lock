@@ -15,7 +15,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
+"@types/node@npm:*, @types/node@npm:^20.8.0":
   version: 20.8.0
   resolution: "@types/node@npm:20.8.0"
   checksum: 9ee3b9116bdb85bf519fe373f0faafdec048b6e3e34b1d97c20a3331f3d3ae0a87b08696805758447694869620d6359c81c18fdee30751a8fb4231bffa8f5482
@@ -163,6 +163,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"meow@npm:^12.1.1":
+  version: 12.1.1
+  resolution: "meow@npm:12.1.1"
+  checksum: a125ca99a32e2306e2f4cbe651a0d27f6eb67918d43a075f6e80b35e9bf372ebf0fc3a9fbc201cbbc9516444b6265fb3c9f80c5b7ebd32f548aa93eb7c28e088
+  languageName: node
+  linkType: hard
+
 "mime-db@npm:1.52.0":
   version: 1.52.0
   resolution: "mime-db@npm:1.52.0"
@@ -229,10 +236,22 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "orthography-checker@workspace:."
   dependencies:
+    "@types/node": "npm:^20.8.0"
+    meow: "npm:^12.1.1"
     openai: "npm:^4.11.0"
+    tiktoken-node: "npm:^0.0.6"
     typescript: "npm:^5.2.2"
+  bin:
+    orthography-checker: bin/main.js
   languageName: unknown
   linkType: soft
+
+"tiktoken-node@npm:^0.0.6":
+  version: 0.0.6
+  resolution: "tiktoken-node@npm:0.0.6"
+  checksum: 20ab5ada42a427da2f2149bad4626a951676b9f19f0b2ca8a6b746b5cc717acbdba228574012ac2470ed574c2c0e39df451d24d0d4eb5e5321b90258c32f2c0b
+  languageName: node
+  linkType: hard
 
 "tr46@npm:~0.0.3":
   version: 0.0.3
