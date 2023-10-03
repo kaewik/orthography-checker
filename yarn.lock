@@ -5,6 +5,13 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
+"@types/diff@npm:^5":
+  version: 5.0.5
+  resolution: "@types/diff@npm:5.0.5"
+  checksum: 9815f0ecb827ced9c3436e1dcdc710ca853b79f8ca919f12b73aac4e80ac7b96751f04b1d92cd69c685d9d6447db9c414f2fb7b4a19bbb0da87162d9f7c2e539
+  languageName: node
+  linkType: hard
+
 "@types/node-fetch@npm:^2.6.4":
   version: 2.6.6
   resolution: "@types/node-fetch@npm:2.6.6"
@@ -15,7 +22,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^20.8.0":
+"@types/node@npm:*":
   version: 20.8.0
   resolution: "@types/node@npm:20.8.0"
   checksum: 9ee3b9116bdb85bf519fe373f0faafdec048b6e3e34b1d97c20a3331f3d3ae0a87b08696805758447694869620d6359c81c18fdee30751a8fb4231bffa8f5482
@@ -26,6 +33,13 @@ __metadata:
   version: 18.18.1
   resolution: "@types/node@npm:18.18.1"
   checksum: 3ceab7a66ab1719b9217db61c64c5f65b22a7f520d34a8397e52a819b731dbb5f52adb1a140536b6007d238e18b6207054e79beeb28e06048e584c890d263ff7
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.8.2":
+  version: 20.8.2
+  resolution: "@types/node@npm:20.8.2"
+  checksum: e9952db222dd3e1cca1107d1b2aaec4e93b4af8b4fc32b42dd4fac3719f98c14edb8c591829c972d2f6e2b527bbb34af53608f6a7973f4a7dbd1d3bc929bbe8d
   languageName: node
   linkType: hard
 
@@ -68,6 +82,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"colors@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "colors@npm:1.4.0"
+  checksum: 9af357c019da3c5a098a301cf64e3799d27549d8f185d86f79af23069e4f4303110d115da98483519331f6fb71c8568d5688fa1c6523600044fd4a54e97c4efb
+  languageName: node
+  linkType: hard
+
 "combined-stream@npm:^1.0.8":
   version: 1.0.8
   resolution: "combined-stream@npm:1.0.8"
@@ -88,6 +109,13 @@ __metadata:
   version: 1.0.0
   resolution: "delayed-stream@npm:1.0.0"
   checksum: d758899da03392e6712f042bec80aa293bbe9e9ff1b2634baae6a360113e708b91326594c8a486d475c69d6259afb7efacdc3537bfcda1c6c648e390ce601b19
+  languageName: node
+  linkType: hard
+
+"diff@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "diff@npm:5.1.0"
+  checksum: 77a0d9beb9ed54796154ac2511872288432124ac90a1cabb1878783c9b4d81f1847f3b746a0630b1e836181461d2c76e1e6b95559bef86ed16294d114862e364
   languageName: node
   linkType: hard
 
@@ -236,7 +264,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "orthography-checker@workspace:."
   dependencies:
-    "@types/node": "npm:^20.8.0"
+    "@types/diff": "npm:^5"
+    "@types/node": "npm:^20.8.2"
+    colors: "npm:^1.4.0"
+    diff: "npm:^5.1.0"
     meow: "npm:^12.1.1"
     openai: "npm:^4.11.0"
     tiktoken-node: "npm:^0.0.6"
