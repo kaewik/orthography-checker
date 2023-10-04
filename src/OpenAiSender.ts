@@ -15,16 +15,15 @@ export class OpenAiSender extends Transform {
         })
     }
 
-    public async _transform(chunk: Buffer, encoding: string, callback: Function): Promise<void> {
-        const textChunk = `${chunk}`
-        const messages = this.getMessages(textChunk)
+    public async _transform(sentences: string[], encoding: string, callback: Function): Promise<void> {
+        const joinedSentences = sentences.join(' ')
+        const messages = this.getMessages(joinedSentences)
         const chatCompletion = await this.openAiClient.chat.completions.create({
             messages: messages,
             model: this.model,
             temperature: 0,
         });
 
-        // TODO: RateLimitation with CompletionUsage
         const textCorrections: TextCorrection[] = JSON.parse(chatCompletion.choices[0].message.content)
 
         for (const textCorrection of textCorrections) {
@@ -34,7 +33,6 @@ export class OpenAiSender extends Transform {
     }
 
     private getMessages(text: string): OpenAI.Chat.ChatCompletionMessage[] {
-        // TODO: make sure system content doesn't exceed token limit
         return [{
             role: 'system',
             content: `You are an expert in german orthography.

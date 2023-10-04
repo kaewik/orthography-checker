@@ -1,52 +1,52 @@
 import { Transform } from 'stream'
 import tiktoken from 'tiktoken-node'
+import { SentenceData } from './SentenceData.type.js'
 
 export class TokenLimiter extends Transform {
-    private data: string
-    private overflowData: string
+    private sentences: SentenceData[]
+    private totalTokenCount: number
     private tokenEncoder: tiktoken.Encoding
 
     constructor(model: string, options = {}) {
-        super(options)
+        super({ objectMode: true, ...options });
         this.tokenEncoder = tiktoken.encodingForModel(model)
-        this.data = ''
+        this.sentences = []
+        this.totalTokenCount = 0
     }
 
-    public _transform(chunk: Buffer, encoding: string, callback: Function): void {
-        this.data += chunk
-        const tokenCount = this.getNumberOfTokens(this.data)
-        if (tokenCount > 2000) {
-            this.pushData(this.data)
-            this.data = ''
+    public _transform(sentence: string, encoding: string, callback: Function): void {
+        const tokenCount = this.getTockenCount(sentence)
+        if (tokenCount <= 2000) {
+            this.sentences.push({
+                content: sentence,
+                tokenCount,
+            })
+            this.totalTokenCount += tokenCount
+        } else {
+            process.stderr.write(`Can't check the following sentence, since it is too long:\n${sentence}`);
+            console.log()
+        }
+        if (this.totalTokenCount > 2000) {
+            this.pushData()
         }
         callback()
     }
 
     public _flush(callback: Function) {
-        this.pushData(this.data)
-        this.data = ''
+        this.pushData()
         callback()
     }
 
-    private pushDataInChunks(data: string): void {
-        const middleIdx = Math.ceil(data.length / 2)
-        const endOfSentenceIdx = data.indexOf('.', middleIdx)
-        const leftPart = data.substring(0, endOfSentenceIdx + 1)
-        const rightPart = data.substring(endOfSentenceIdx + 2)
-        this.pushData(leftPart)
-        this.pushData(rightPart)
+    private pushData() {
+        const longSentences = this.sentences.filter((sentenceData) => sentenceData.tokenCount > 1000)
+        const shortSentences = this.sentences.filter((sentenceData) => sentenceData.tokenCount <= 1000)
+        longSentences.forEach((sentenceData) => this.push([sentenceData]))
+        this.push(shortSentences)
+        this.sentences = []
+        this.totalTokenCount = 0
     }
 
-    private pushData(data: string) {
-        const tokenCount = this.getNumberOfTokens(data)
-        if (tokenCount < 2500)  {
-            this.push(data)
-        } else {
-            this.pushDataInChunks(data)
-        }
-    }
-
-    private getNumberOfTokens(text: string): number {
+    private getTockenCount(text: string): number {
         return this.tokenEncoder.encode(text).length
     }
 }
