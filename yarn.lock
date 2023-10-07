@@ -43,6 +43,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/uuid@npm:^9":
+  version: 9.0.4
+  resolution: "@types/uuid@npm:9.0.4"
+  checksum: 3f713a67a56af20ecdfcbc31f29f7182a8aea51f1120d75daa76bb346973e014ae875c27cdd455bd0812a498330abad4ecbc1b65e1b4c507bb897fcda130f079
+  languageName: node
+  linkType: hard
+
 "abort-controller@npm:^3.0.0":
   version: 3.0.0
   resolution: "abort-controller@npm:3.0.0"
@@ -266,12 +273,14 @@ __metadata:
   dependencies:
     "@types/diff": "npm:^5"
     "@types/node": "npm:^20.8.2"
+    "@types/uuid": "npm:^9"
     colors: "npm:^1.4.0"
     diff: "npm:^5.1.0"
     meow: "npm:^12.1.1"
     openai: "npm:^4.11.0"
     tiktoken-node: "npm:^0.0.6"
     typescript: "npm:^5.2.2"
+    uuid: "npm:^9.0.1"
     web-streams-polyfill: "npm:^3.2.1"
   bin:
     orthography-checker: bin/main.js
@@ -309,6 +318,15 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 062c1cee1990e6b9419ce8a55162b8dc917eb87f807e4de0327dbc1c2fa4e5f61bc0dd4e034d38ff541d1ed0479b53bcee8e4de3a4075c51a1724eb6216cb6f5
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "uuid@npm:9.0.1"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 1607dd32ac7fc22f2d8f77051e6a64845c9bce5cd3dd8aa0070c074ec73e666a1f63c7b4e0f4bf2bc8b9d59dc85a15e17807446d9d2b17c8485fbc2147b27f9b
   languageName: node
   linkType: hard
 

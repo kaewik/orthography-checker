@@ -1,4 +1,4 @@
 export type TextCorrection = {
-    incorrectSentence: string,
+    originalSentence: string,
     correctedSentence: string,
 }

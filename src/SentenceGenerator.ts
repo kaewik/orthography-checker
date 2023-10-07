@@ -1,4 +1,4 @@
-import { Transform } from 'stream'
+import { Transform } from 'node:stream'
 
 export class SentenceGenerator extends Transform {
 
@@ -8,10 +8,12 @@ export class SentenceGenerator extends Transform {
 
     public _transform(chunk: Buffer, encoding: string, callback: Function): void {
         const textChunk = chunk.toString()
-        const regexToMatchSentences = /\p{Lu}[^.!?]*[.!?]/g
-        const sentencesInText = textChunk.match(textChunk)
-        for (const sentence of sentencesInText) {
-            this.push(sentence)
+        const regexToMatchSentences = /(?<=[.!?])\s*(?=[A-ZÄÖÜ])/g
+        const sentencesInText = textChunk.split(regexToMatchSentences)
+        if (sentencesInText) {
+            for (const sentence of sentencesInText) {
+                this.push(sentence)
+            }
         }
         callback()
     }

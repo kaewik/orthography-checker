@@ -1,10 +1,12 @@
-import { Transform } from 'stream'
+import { Transform } from 'node:stream'
 import OpenAI from 'openai'
 import { TextCorrection } from './TextCorrection.type.js'
 
 export class OpenAiSender extends Transform {
     private readonly openAiClient: OpenAI
     private model: string
+    private pendingPromiseCounter: number
+    private pendingPromises: any[]
 
     constructor(model: string, openAiKey: string, options = {}) {
         super({ objectMode: true, ...options });
@@ -13,40 +15,54 @@ export class OpenAiSender extends Transform {
         this.openAiClient = new OpenAI({
             apiKey: openAiKey,
         })
+        this.pendingPromiseCounter = 0
+        this.pendingPromises = []
     }
 
-    public async _transform(sentences: string[], encoding: string, callback: Function): Promise<void> {
-        const joinedSentences = sentences.join(' ')
-        const messages = this.getMessages(joinedSentences)
-        const chatCompletion = await this.openAiClient.chat.completions.create({
+    public _transform(sentence: string, encoding: string, callback: Function) {
+        const messages = this.getMessages(sentence)
+        this.pendingPromiseCounter++
+        const chatCompletionPromise = this.openAiClient.chat.completions.create({
             messages: messages,
             model: this.model,
             temperature: 0,
-        });
+        }).then((completion) => {
+            this.pendingPromiseCounter--
 
-        const textCorrections: TextCorrection[] = JSON.parse(chatCompletion.choices[0].message.content)
-
-        for (const textCorrection of textCorrections) {
+            const reply = completion.choices[0].message.content
+            const textCorrection = reply.length > 0 && JSON.parse(reply)
             this.push(textCorrection)
-        }
+        }).catch((err) => console.log(err))
+        this.pendingPromises.push(chatCompletionPromise)
         callback()
     }
 
+    public _final(done: Function) {
+        this.checkIfDone(done)
+    }
+
+    private checkIfDone(done: Function) {
+        if (this.pendingPromiseCounter === 0) {
+            done()
+        } else {
+            setTimeout(() => this.checkIfDone(done), 30_000)
+        }
+    }
+
     private getMessages(text: string): OpenAI.Chat.ChatCompletionMessage[] {
+        const systemMessage = `Du bist ein Experte in deutscher Rechtschreibung und Grammatik.`
+        const userMessage = `Deine Aufgabe ist es den Nutzertext auf Grammatik und Rechtschreibung zu prüfen. `
+            + `Deine Aufgabe ist es nicht stiliestische Verbesserungen vorzunehmen.`
+            + 'Deine Antwort muss im JSON format sein, wobei folgende Felder vorhanden sein müssen: '
+            + '"originalSentence" und "correctedSentence".\n\n'
+            + `Nutzertext: """${text}"""`
+
         return [{
             role: 'system',
-            content: `You are an expert in german orthography.
-                Your task is to correct the spelling and grammar of the user input.
-                Only provide the corrected sentences.
-                Do not include any explanations.
-                Only provide a  RFC8259 compliant JSON response following this format without deviation.
-                [{
-                    "incorrectSentence": "Ich bin so kluk.",
-                    "correctedSentence": "Ich bin so klug."
-                }]`
+            content: systemMessage,
         },{
             role: 'user',
-            content: `${text}`,
+            content: userMessage,
         }]
     }
 }
