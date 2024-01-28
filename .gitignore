@@ -13,3 +13,5 @@
 .pnp.*
 
 bin/
+
+node_modules/

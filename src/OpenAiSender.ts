@@ -49,7 +49,7 @@ export class OpenAiSender extends Transform {
         }
     }
 
-    private getMessages(text: string): OpenAI.Chat.ChatCompletionMessage[] {
+    private getMessages(text: string): OpenAI.ChatCompletionMessageParam[] {
         const systemMessage = `Du bist ein Experte in deutscher Rechtschreibung und Grammatik.`
         const userMessage = `Deine Aufgabe ist es den Nutzertext auf Grammatik und Rechtschreibung zu prüfen. `
             + `Deine Aufgabe ist es nicht stiliestische Verbesserungen vorzunehmen.`
