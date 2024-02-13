@@ -6,6 +6,7 @@ import { TokenLimiter } from './TokenLimiter.js'
 import { RateLimiter } from './RateLimiter.js'
 import { OpenAiSender } from './OpenAiSender.js'
 import { DiffGenerator } from './DiffGenerator.js'
+import { DiffPrinter } from './DiffPrinter.js'
 import { parseArgs } from './CommandLineParser.js'
 
 const GPT_MODEL = 'gpt-3.5-turbo'
@@ -21,13 +22,15 @@ async function main(): Promise<void> {
     const rateLimiter = new RateLimiter()
     const openAiSender = new OpenAiSender(GPT_MODEL, args.openAiKey)
     const diffGenerator = new DiffGenerator()
+    const diffPrinter = new DiffPrinter()
     await pipeline(
         fileStream,
         sentenceGenerator,
         tokenLimiter,
         rateLimiter,
         openAiSender,
-        diffGenerator
+        diffGenerator,
+        diffPrinter
     )
     return
 }
